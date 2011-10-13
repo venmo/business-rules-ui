@@ -6,31 +6,27 @@ describe('BusinessRules.RuleEngine', function() {
   });
 
   describe('initialization', function() {
-    context("with no arguments", function() {
-      it('sets rule to null', function() {
-        expect(engine.rule).toBeUndefined();
-      });
+    var rule, conditions, actions;
+    beforeEach(function() {
+      conditions = jasmine.createSpy("conditions");
+      actions = jasmine.createSpy("actions");
+      rule = {conditions: conditions, actions: actions};
+      engine = new BusinessRules.RuleEngine(rule);
     });
 
-    context("with a single rule", function() {
-      var rule;
-      beforeEach(function() {
-        rule = {conditions: {}, actions: []};
-        engine = new BusinessRules.RuleEngine(rule);
-      });
+    it('adds the given conditions', function() {
+      expect(engine.conditions).toEqual(conditions);
+    });
 
-      it('adds the given rule', function() {
-        expect(engine.rule).toEqual(rule);
-      });
+    it('adds the given actions', function() {
+      expect(engine.actions).toEqual(actions);
     });
   });
 
   describe('standard operators', function() {
     describe('present', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{field: "name", operator: "present", value: null}]}
-        };
+        engine.conditions = {all: [{field: "name", operator: "present", value: null}]};
       });
 
       it('matches a truthy value', function() {
@@ -44,9 +40,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('blank', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{field: "name", operator: "blank", value: null}]}
-        };
+        engine.conditions = {all: [{field: "name", operator: "blank", value: null}]};
       });
 
       it('matches a falsy value', function() {
@@ -60,9 +54,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('equalTo', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{field: "num", operator: "equalTo", value: "123"}]}
-        };
+        engine.conditions = {all: [{field: "num", operator: "equalTo", value: "123"}]};
       });
 
       it('returns true with matching string', function() {
@@ -80,9 +72,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('notEqualTo', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{field: "num", operator: "notEqualTo", value: "123"}]}
-        };
+        engine.conditions = {all: [{field: "num", operator: "notEqualTo", value: "123"}]};
       });
 
       it('returns false with matching string', function() {
@@ -100,9 +90,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('greaterThan', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{field: "num", operator: "greaterThan", value: "123"}]}
-        };
+        engine.conditions = {all: [{field: "num", operator: "greaterThan", value: "123"}]};
       });
 
       it('returns false when greater than value', function() {
@@ -126,9 +114,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('greaterThanEqual', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{field: "num", operator: "greaterThanEqual", value: "123"}]}
-        };
+        engine.conditions = {all: [{field: "num", operator: "greaterThanEqual", value: "123"}]};
       });
 
       it('returns false when greater than value', function() {
@@ -152,9 +138,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('lessThan', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{field: "num", operator: "lessThan", value: "123"}]}
-        };
+        engine.conditions = {all: [{field: "num", operator: "lessThan", value: "123"}]};
       });
 
       it('returns false when greater than value', function() {
@@ -178,9 +162,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('lessThanEqual', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{field: "num", operator: "lessThanEqual", value: "123"}]}
-        };
+        engine.conditions = {all: [{field: "num", operator: "lessThanEqual", value: "123"}]};
       });
 
       it('returns false when greater than value', function() {
@@ -204,9 +186,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('includes', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{field: "name", operator: "includes", value: "Joe"}]}
-        };
+        engine.conditions = {all: [{field: "name", operator: "includes", value: "Joe"}]};
       });
 
       it('returns true when value is included', function() {
@@ -220,13 +200,11 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('matchesRegex', function() {
       beforeEach(function() {
-        engine.rule = {
-          conditions: {all: [{
-            field: "num", 
-            operator: "matchesRegex", 
-            value: "/\\(\\d{3}\\) \\d{3}-\\d{4}/"
-          }]}
-        };
+        engine.conditions = {all: [{
+          field: "num", 
+          operator: "matchesRegex", 
+          value: "/\\(\\d{3}\\) \\d{3}-\\d{4}/"
+        }]};
       });
 
       it('returns true when value matches Regex', function() {
@@ -241,9 +219,7 @@ describe('BusinessRules.RuleEngine', function() {
 
   describe('custom operators', function() {
     beforeEach(function() {
-      engine.rule = {
-        conditions: {all: [{field: "name", operator: "longerThan", value: "5"}]}
-      };
+      engine.conditions = {all: [{field: "name", operator: "longerThan", value: "5"}]};
       engine.addOperators({
         longerThan: function(actual, length) {
           return actual.length > parseInt(length, 10);
@@ -259,15 +235,13 @@ describe('BusinessRules.RuleEngine', function() {
 
   describe('complex logic', function() {
     beforeEach(function() {
-      engine.rule = {
-        conditions: {all: [
-          {field: "name", operator: "present", value: null},
-          {any: [
-            {field: "age", operator: "greaterThanEqual", value: "18"},
-            {field: "permissionSlipSigned", operator: "present", value: null}
-          ]}
+      engine.conditions = {all: [
+        {field: "name", operator: "present", value: null},
+        {any: [
+          {field: "age", operator: "greaterThanEqual", value: "18"},
+          {field: "permissionSlipSigned", operator: "present", value: null}
         ]}
-      };
+      ]};
     });
 
     it('matches nested all/any conditions', function() {
@@ -276,6 +250,71 @@ describe('BusinessRules.RuleEngine', function() {
       expect(engine.matches({name: "Joe", age: 17, permissionSlipSigned: false})).toBeFalsy();
       expect(engine.matches({name: "Joe", age: 17})).toBeFalsy();
       expect(engine.matches({name: "", age: 22})).toBeFalsy();
+    });
+  });
+
+  describe('matching with empty conditions', function() {
+    beforeEach(function() {
+      engine.rule = {
+        conditions: {all: []} 
+      };
+    });
+
+    it('returns true', function() {
+      expect(engine.matches({anything: "whatever"})).toBeTruthy();
+    });
+  });
+
+  describe('runActions', function() {
+    var action1, action2;
+    beforeEach(function() {
+      action1 = jasmine.createSpy('action1');
+      action2 = jasmine.createSpy('action2');
+
+      engine.actions = [
+        {name: "action-select", value: "action1", fields: [
+          {name: "message", value: "hello"}
+        ]},
+        {name: "action-select", value: "action2"}
+      ];
+
+      engine.runActions({action1: action1, action2: action2});
+    });
+
+    it('runs the actions with the given rules', function() {
+      expect(action1).toHaveBeenCalledWith([{name: "message", value: "hello"}]);
+      expect(action2).toHaveBeenCalledWith([]);
+    });
+  });
+
+  describe('run', function() {
+    var conditions, actions;
+    beforeEach(function() {
+      spyOn(engine, "runActions");
+      conditions = jasmine.createSpy("conditions");
+      actions = jasmine.createSpy("actions");
+    });
+
+    context("with matching conditions", function() {
+      beforeEach(function() {
+        spyOn(engine, "matches").andReturn(true);
+        engine.run(conditions, actions);
+      });
+
+      it('runs the actions', function() {
+        expect(engine.runActions).toHaveBeenCalledWith(actions);
+      });
+    });
+
+    context("without matching conditions", function() {
+      beforeEach(function() {
+        spyOn(engine, "matches").andReturn(false);
+        engine.run(conditions, actions);
+      });
+
+      it('runs the actions', function() {
+        expect(engine.runActions).not.toHaveBeenCalled();
+      });
     });
   });
 });

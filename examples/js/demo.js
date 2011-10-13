@@ -90,7 +90,7 @@ var conditions, actions, nameField, occupationField, submit;
         actions: actions.actionsBuilder("data")
       });
       engine.run({nameField: nameField.val(), occupationField: occupationField.val()}, {
-        alert: function(fields) { alert(fields[0].message); },
+        alert: function(fields) { alert(fields[0].value); },
         updateField: function(fields) {
           var fieldId = fields[0].value;
           var field = $("#" + fieldId);
@@ -99,89 +99,6 @@ var conditions, actions, nameField, occupationField, submit;
         }        
       });
     });
-  }
-
-  function runRule() {
-    var shouldRun = handleNode(conditions.conditionsBuilder("data"));
-    if(shouldRun) {
-      runActions(actions.actionsBuilder("data"));
-    }
-  }
-
-  function handleNode(node) {
-    if(node.all || node.any) {
-      return handleConditionalNode(node);
-    } else {
-      return handleRuleNode(node);
-    }
-  }
-
-  function handleConditionalNode(node) {
-    var isAll = !!(node.all);
-    var nodes = isAll ? node.all : node.any;
-    for(var i=0; i < nodes.length; i++) {
-      var result = handleNode(nodes[i]);
-      if(isAll && !result) { return false; }
-      if(!isAll && !!result) { return true; }
-    }
-    return isAll;
-  }
-
-  function handleRuleNode(node) {
-    var fieldValue = $("#" + node.field).val();
-    return compareValues(fieldValue, node.operator, node.value);
-  }
-
-  function compareValues(actual, operator, value) {
-    if(operator === "present") {
-      return !!actual;
-    } 
-    else if(operator === "blank") {
-      return !actual;
-    } 
-    else if(operator === "equalTo") {
-      return "" + actual === "" + value;
-    } 
-    else if(operator === "notEqualTo") {
-      return "" + actual !== "" + value;
-    } 
-    else if(operator === "greaterThan") {
-      return parseFloat(actual) > parseFloat(value);
-    }
-    else if(operator === "lessThan") {
-      return parseFloat(actual) < parseFloat(value);
-    }
-    else if(operator === "greaterThanEqual") {
-      return parseFloat(actual) >= parseFloat(value);
-    }
-    else if(operator === "lessThanEqual") {
-      return parseFloat(actual) <= parseFloat(value);
-    }
-    else if(operator === "includes") {
-      return ("" + actual).indexOf("" + value) > -1;
-    }
-    else if(operator === "matchesRegex") {
-      var r = value.gsub(/^\/|\/$/, "");
-      var regex = new RegExp(r);
-      return regex.test("" + actual);
-    }
-  }
-
-  function runActions(actions) {
-    for(var i=0; i < actions.length; i++) {
-      var action = actions[i];
-      var actionType = action.value;
-      if(actionType === "alert") { 
-        var message = action.fields[0].value;
-        alert(message); 
-      }
-      else if(actionType === "updateField") {
-        var fieldId = action.fields[0].value;
-        var field = $("#" + fieldId);
-        var val = action.fields[0].fields[0].value;
-        field.val(val);
-      }
-    }
   }
   $(onReady);
 })(jQuery);
