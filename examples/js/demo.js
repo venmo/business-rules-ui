@@ -49,7 +49,8 @@ var conditions, actions, nameField, ageField, occupationField, submit;
         ]}
       ],
       data: {"all": [
-        {field: "nameField", operator: "equalTo", value: "Godzilla"}
+        {field: "nameField", operator: "equalTo", value: "Godzilla"},
+        {field: "ageField", operator: "greaterThanEqual", value: "21"}
       ]}
     });
   }
@@ -80,7 +81,7 @@ var conditions, actions, nameField, ageField, occupationField, submit;
         ]},
         {name: "action-select", value: "updateField", fields: [
           {name: "fieldId", value: "occupationField", fields: [
-            {name: "value", value: "marketing"}
+            {name: "newValue", value: "marketing"}
           ]}
         ]}
       ]
