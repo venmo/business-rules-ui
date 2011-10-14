@@ -275,15 +275,36 @@ describe('BusinessRules.RuleEngine', function() {
         {name: "action-select", value: "action1", fields: [
           {name: "message", value: "hello"}
         ]},
-        {name: "action-select", value: "action2"}
+        {name: "action-select", value: "action2", fields: [
+          {name: "a", value: "value a", fields: [
+            {name: "b", value: "value b", fields: [
+              {name: "c", value: "value c"},
+              {name: "d", value: "value d"}
+            ]}
+          ]}
+        ]}
       ];
 
       engine.runActions({action1: action1, action2: action2});
     });
 
-    it('runs the actions with the given rules', function() {
-      expect(action1).toHaveBeenCalledWith([{name: "message", value: "hello"}]);
-      expect(action2).toHaveBeenCalledWith([]);
+    it('runs the actions', function() {
+      expect(action1).toHaveBeenCalled();
+      expect(action2).toHaveBeenCalled();
+    });
+
+    context("using Finder", function() {
+      it('runs actions with the data with a finder', function() {
+        var finder = action2.argsForCall[0][0];
+        expect(finder.find("a")).toEqual("value a");
+        expect(finder.find("a", "b")).toEqual("value b");
+        expect(finder.find("a", "b", "c")).toEqual("value c");
+        expect(finder.find("a", "b", "d")).toEqual("value d");
+      });
+
+      it('still gives you ', function() {
+        expect().toEqual();
+      });
     });
   });
 

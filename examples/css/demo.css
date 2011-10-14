@@ -60,6 +60,10 @@
   display: none;
 }
 
+.action select, .action input, .action textarea {
+  margin-right: 10px;
+}
+
 .action textarea, .action input {
   width: 250px;
 }
