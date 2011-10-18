@@ -17,18 +17,20 @@ The goals of this library are to:
 Checkout the examples directory if you just want to dive in, it demonstrates all the features
 pretty well!
 
-## `$.fn.conditionsBuilder()`
+## $.fn.conditionsBuilder()
 
 The `$.fn.conditionsBuilder()` method has two forms, the first being:
 
-  $("#myDiv").conditionsBuilder({fields: [...], data: {...});
+```javascript
+$("#myDiv").conditionsBuilder({fields: [...], data: {...});
+```
 
 The first form creates a `ConditionsBuilder` object for the given DOM element with the passed fields and data.
 The `fields` param is an array of objects that define the factors that can be used in conditional statements.
 Each has a `label`, `value` and an array of `operators`. It may also have an `options` array of objects
 with `label` and `value`.
 
-Each `operator` is an object with `label`, `value` and `fieldType`. The `fieldType` can be:
+Each operator is an object with `label`, `value` and `fieldType`. The `fieldType` can be:
 
 * `"none"` - The operator does not require further data entry (ie `"present"`, `"blank"`).
 * `"text"` - User will be presented with an input of `type=text`.
@@ -49,14 +51,16 @@ entered by the user in the UI.
 Once the UI has been built by the `ConditionsBuilder` and the user has entered information, the data can
 be retrieved by using the second form of the `conditionsBuilder` method:
 
-  var data = $("#myDiv").conditionsBuilder("data");
+```javascript
+var data = $("#myDiv").conditionsBuilder("data");
+```
 
 This will serialize the entered conditionals into a data object. This object can be persisted and then later
 used to create a new `ConditionsBuilder` for editing. This data object will also be used to instantiate
 a `BusinessRules.RuleEngine` object for running the conditional logic.
 
 
-## `$.fn.actionsBuilder()`
+## $.fn.actionsBuilder()
 
 The `$.fn.actionsBuilder` has an identical API to `$.fn.conditionsBuilder`, but it uses a different data structure.
 The `fields` property should be an array of action objects. Each action object has a `label` and `value`.
@@ -65,15 +69,17 @@ All action objects that are not "top level" should also have a `fieldType` of `t
 
 Here's an example of what a "Send Email" action could look like:
 
-  $("#myDiv").actionsBuilder({fields: [
-    {label: "Send Email", value: "sendEmail", fields: [
-      {label: "To", value: "to", fieldType: "text"},
-      {label: "CC", value: "cc", fieldType: "text"},
-      {label: "BCC", value: "bcc", fieldType: "text"},
-      {label: "Subject", value: "subject", fieldType: "text"},
-      {label: "Body", value: "body", fieldType: "textarea"}
-    ]}
-  ]});
+```javascript
+$("#myDiv").actionsBuilder({fields: [
+  {label: "Send Email", value: "sendEmail", fields: [
+    {label: "To", value: "to", fieldType: "text"},
+    {label: "CC", value: "cc", fieldType: "text"},
+    {label: "BCC", value: "bcc", fieldType: "text"},
+    {label: "Subject", value: "subject", fieldType: "text"},
+    {label: "Body", value: "body", fieldType: "textarea"}
+  ]}
+]});
+```
 
 Action objects with a `fieldType` of `select` should not have a `fields` property -- rather they have an `options`
 property with a `label` and `value` for each option. That option object, however, can have a `fields` property.
@@ -81,28 +87,32 @@ This allows you to specify nested fields that will only be displayed if the give
 
 Building on the last example, this allows the user to specify an email template, or use a custom Subject and Body:
 
-  $("#myDiv").actionsBuilder({fields: [
-    {label: "Send Email", value: "sendEmail", fields: [
-      {label: "To", value: "to", fieldType: "text"},
-      {label: "CC", value: "cc", fieldType: "text"},
-      {label: "BCC", value: "bcc", fieldType: "text"},
-      {label: "Email Template", value: "template", fieldType: "select", options: [
-        {label: "Welcome Email", value: "welcomeEmail"},
-        {label: "Followup Email", value: "followupEmail"},
-        {label: "Custom Email", value: "customEmail", fields: [
-          {label: "Subject", value: "subject", fieldType: "text"},
-          {label: "Body", value: "body", fieldType: "textarea"}
-        ]}
+```javascript
+$("#myDiv").actionsBuilder({fields: [
+  {label: "Send Email", value: "sendEmail", fields: [
+    {label: "To", value: "to", fieldType: "text"},
+    {label: "CC", value: "cc", fieldType: "text"},
+    {label: "BCC", value: "bcc", fieldType: "text"},
+    {label: "Email Template", value: "template", fieldType: "select", options: [
+      {label: "Welcome Email", value: "welcomeEmail"},
+      {label: "Followup Email", value: "followupEmail"},
+      {label: "Custom Email", value: "customEmail", fields: [
+        {label: "Subject", value: "subject", fieldType: "text"},
+        {label: "Body", value: "body", fieldType: "textarea"}
       ]}
     ]}
-  ]});
+  ]}
+]});
+```
 
 In this example, the "Subject" and "Body" fields will only be displayed if the user has selected the "Custom Email"
 template option.
 
 To get the data out of the UI, run the `actionsBuilder` method with `"data"`:
 
-  var data = $("#myDiv").actionsBuilder("data");
+```javascript
+var data = $("#myDiv").actionsBuilder("data");
+```
 
 Each action data object has a `name` that matches the corresponding field's `value`, and a `value` property with the
 user-entered value. It may also have a `fields` array of nested action data objects, which correspond to the nested
