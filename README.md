@@ -197,4 +197,29 @@ engine.addOperators({
 
 The `addOperators` method also allows you to override the standard operators if, heaven forbid, you find that necessary.
 
+### Action Functions
 
+When a function on your `actionsAdapter` object is called, it is passed a `Finder` object. The `Finder` object has a
+`data` property that will return the action's data structure so that you can traverse it yourself. This data
+structure can look something like:
+
+```javascript
+[{name: "drinkType", value: "martini", fields: [
+  {name: "oliveCount", value: "3"},
+  {name: "shaken", value: "yes"}
+]}]
+```
+
+While you certainly can traverse this structure, chances are you just want to quickly access the values. This is why
+the `Finder` gives you the `find` convenience method, which takes one or more names and returns the matching value:
+
+```javascript
+var actionsAdapter = {
+  giveDrink: function(data) {
+    var drinkType = data.find("drinkType"),
+        oliveCount = data.find("drinkType", "oliveCount"),
+        shaken = data.find("drinkType", "shaken");
+    console.log(drinkType, oliveCount, shaken); // "martini", "3", "yes"
+  }
+};
+```
