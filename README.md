@@ -27,10 +27,10 @@ $("#myDiv").conditionsBuilder({fields: [...], data: {...});
 
 The first form creates a `ConditionsBuilder` object for the given DOM element with the passed fields and data.
 The `fields` param is an array of objects that define the factors that can be used in conditional statements.
-Each has a `label`, `value` and an array of `operators`. It may also have an `options` array of objects
-with `label` and `value`.
+Each has a `label`, `name` and an array of `operators`. It may also have an `options` array of objects
+with `label` and `name`.
 
-Each operator is an object with `label`, `value` and `fieldType`. The `fieldType` can be:
+Each operator is an object with `label`, `name` and `fieldType`. The `fieldType` can be:
 
 * `"none"` - The operator does not require further data entry (ie `"present"`, `"blank"`).
 * `"text"` - User will be presented with an input of `type=text`.
@@ -44,8 +44,8 @@ generated without any initial conditions.
 The object passed as `data` should be a "conditional object", meaning it has a single key of `all` or `any`
 and a value of an array of nodes. These nodes can either be rule objects or nested conditional objects.
 
-A rule object has `field`, `operator` and `value` strings. The `field` should match a field's `value` property,
-the `operator` should match an operator's `value` property, and the `value` is an arbitrary string value
+A rule object has `name`, `operator` and `value` strings. The `name` should match a field's `name` property,
+the `operator` should match an operator's `name` property, and the `value` is an arbitrary string value
 entered by the user in the UI.
 
 Once the UI has been built by the `ConditionsBuilder` and the user has entered information, the data can
@@ -63,7 +63,7 @@ a `BusinessRules.RuleEngine` object for running the conditional logic.
 ## $.fn.actionsBuilder()
 
 The `$.fn.actionsBuilder` has an identical API to `$.fn.conditionsBuilder`, but it uses a different data structure.
-The `fields` property should be an array of action objects. Each action object has a `label` and `value`.
+The `fields` property should be an array of action objects. Each action object has a `label` and `name`.
 An action object may have a `fields` property that is an array of action objects, allowing for nested action data. 
 All action objects that are not "top level" should also have a `fieldType` of `text`, `textarea` or `select`.
 
@@ -72,17 +72,17 @@ Here's an example of what a "Send Email" action could look like:
 ```javascript
 $("#myDiv").actionsBuilder({fields: [
   {label: "Send Email", value: "sendEmail", fields: [
-    {label: "To", value: "to", fieldType: "text"},
-    {label: "CC", value: "cc", fieldType: "text"},
-    {label: "BCC", value: "bcc", fieldType: "text"},
-    {label: "Subject", value: "subject", fieldType: "text"},
-    {label: "Body", value: "body", fieldType: "textarea"}
+    {label: "To", name: "to", fieldType: "text"},
+    {label: "CC", name: "cc", fieldType: "text"},
+    {label: "BCC", name: "bcc", fieldType: "text"},
+    {label: "Subject", name: "subject", fieldType: "text"},
+    {label: "Body", name: "body", fieldType: "textarea"}
   ]}
 ]});
 ```
 
 Action objects with a `fieldType` of `select` should not have a `fields` property -- rather they have an `options`
-property with a `label` and `value` for each option. That option object, however, can have a `fields` property.
+property with a `label` and `name` for each option. That option object, however, can have a `fields` property.
 This allows you to specify nested fields that will only be displayed if the given option has been selected.
 
 Building on the last example, this allows the user to specify an email template, or use a custom Subject and Body:
@@ -90,15 +90,15 @@ Building on the last example, this allows the user to specify an email template,
 ```javascript
 $("#myDiv").actionsBuilder({fields: [
   {label: "Send Email", value: "sendEmail", fields: [
-    {label: "To", value: "to", fieldType: "text"},
-    {label: "CC", value: "cc", fieldType: "text"},
-    {label: "BCC", value: "bcc", fieldType: "text"},
-    {label: "Email Template", value: "template", fieldType: "select", options: [
-      {label: "Welcome Email", value: "welcomeEmail"},
-      {label: "Followup Email", value: "followupEmail"},
-      {label: "Custom Email", value: "customEmail", fields: [
-        {label: "Subject", value: "subject", fieldType: "text"},
-        {label: "Body", value: "body", fieldType: "textarea"}
+    {label: "To", name: "to", fieldType: "text"},
+    {label: "CC", name: "cc", fieldType: "text"},
+    {label: "BCC", name: "bcc", fieldType: "text"},
+    {label: "Email Template", name: "template", fieldType: "select", options: [
+      {label: "Welcome Email", name: "welcomeEmail"},
+      {label: "Followup Email", name: "followupEmail"},
+      {label: "Custom Email", name: "customEmail", fields: [
+        {label: "Subject", name: "subject", fieldType: "text"},
+        {label: "Body", name: "body", fieldType: "textarea"}
       ]}
     ]}
   ]}
@@ -142,7 +142,7 @@ and another object with functions that map to the actions. For example:
 
 ```javascript
 var engine = new BusinessRules.RuleEngine({
-  conditions: {all: [{field: "name", operator: "present", value: ""}, {field: "age", operator: "greaterThanEqual", value: "21"}]},
+  conditions: {all: [{name: "name", operator: "present", value: ""}, {name: "age", operator: "greaterThanEqual", value: "21"}]},
   actions: [{name: "action-select", value: "giveDrink", fields: [{name: "drinkType", value: "martini"}]}]
 });
 
@@ -184,7 +184,7 @@ Custom operators can be added to a `RuleEngine` using the `addOperators` method:
 
 ```javascript
 var engine = new BusinessRules.RuleEngine({
-  conditions: {all: [{field: "password", operator: "longerThan", "6"}]},
+  conditions: {all: [{name: "password", operator: "longerThan", value: "6"}]},
   actions: []
 });
 

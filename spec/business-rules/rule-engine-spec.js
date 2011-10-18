@@ -26,7 +26,7 @@ describe('BusinessRules.RuleEngine', function() {
   describe('standard operators', function() {
     describe('present', function() {
       beforeEach(function() {
-        engine.conditions = {all: [{field: "name", operator: "present", value: null}]};
+        engine.conditions = {all: [{name: "name", operator: "present", value: null}]};
       });
 
       it('matches a truthy value', function() {
@@ -40,7 +40,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('blank', function() {
       beforeEach(function() {
-        engine.conditions = {all: [{field: "name", operator: "blank", value: null}]};
+        engine.conditions = {all: [{name: "name", operator: "blank", value: null}]};
       });
 
       it('matches a falsy value', function() {
@@ -54,7 +54,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('equalTo', function() {
       beforeEach(function() {
-        engine.conditions = {all: [{field: "num", operator: "equalTo", value: "123"}]};
+        engine.conditions = {all: [{name: "num", operator: "equalTo", value: "123"}]};
       });
 
       it('returns true with matching string', function() {
@@ -72,7 +72,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('notEqualTo', function() {
       beforeEach(function() {
-        engine.conditions = {all: [{field: "num", operator: "notEqualTo", value: "123"}]};
+        engine.conditions = {all: [{name: "num", operator: "notEqualTo", value: "123"}]};
       });
 
       it('returns false with matching string', function() {
@@ -90,7 +90,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('greaterThan', function() {
       beforeEach(function() {
-        engine.conditions = {all: [{field: "num", operator: "greaterThan", value: "123"}]};
+        engine.conditions = {all: [{name: "num", operator: "greaterThan", value: "123"}]};
       });
 
       it('returns false when greater than value', function() {
@@ -114,7 +114,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('greaterThanEqual', function() {
       beforeEach(function() {
-        engine.conditions = {all: [{field: "num", operator: "greaterThanEqual", value: "123"}]};
+        engine.conditions = {all: [{name: "num", operator: "greaterThanEqual", value: "123"}]};
       });
 
       it('returns false when greater than value', function() {
@@ -138,7 +138,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('lessThan', function() {
       beforeEach(function() {
-        engine.conditions = {all: [{field: "num", operator: "lessThan", value: "123"}]};
+        engine.conditions = {all: [{name: "num", operator: "lessThan", value: "123"}]};
       });
 
       it('returns false when greater than value', function() {
@@ -162,7 +162,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('lessThanEqual', function() {
       beforeEach(function() {
-        engine.conditions = {all: [{field: "num", operator: "lessThanEqual", value: "123"}]};
+        engine.conditions = {all: [{name: "num", operator: "lessThanEqual", value: "123"}]};
       });
 
       it('returns false when greater than value', function() {
@@ -186,7 +186,7 @@ describe('BusinessRules.RuleEngine', function() {
 
     describe('includes', function() {
       beforeEach(function() {
-        engine.conditions = {all: [{field: "name", operator: "includes", value: "Joe"}]};
+        engine.conditions = {all: [{name: "name", operator: "includes", value: "Joe"}]};
       });
 
       it('returns true when value is included', function() {
@@ -201,7 +201,7 @@ describe('BusinessRules.RuleEngine', function() {
     describe('matchesRegex', function() {
       beforeEach(function() {
         engine.conditions = {all: [{
-          field: "num", 
+          name: "num", 
           operator: "matchesRegex", 
           value: "/\\(\\d{3}\\) \\d{3}-\\d{4}/"
         }]};
@@ -219,7 +219,7 @@ describe('BusinessRules.RuleEngine', function() {
 
   describe('custom operators', function() {
     beforeEach(function() {
-      engine.conditions = {all: [{field: "name", operator: "longerThan", value: "5"}]};
+      engine.conditions = {all: [{name: "name", operator: "longerThan", value: "5"}]};
       engine.addOperators({
         longerThan: function(actual, length) {
           return actual.length > parseInt(length, 10);
@@ -236,10 +236,10 @@ describe('BusinessRules.RuleEngine', function() {
   describe('complex logic', function() {
     beforeEach(function() {
       engine.conditions = {all: [
-        {field: "name", operator: "present", value: null},
+        {name: "name", operator: "present", value: null},
         {any: [
-          {field: "age", operator: "greaterThanEqual", value: "18"},
-          {field: "permissionSlipSigned", operator: "present", value: null}
+          {name: "age", operator: "greaterThanEqual", value: "18"},
+          {name: "permissionSlipSigned", operator: "present", value: null}
         ]}
       ]};
     });

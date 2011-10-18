@@ -1,44 +1,44 @@
 describe('$.fn.conditionsBuilder', function() {
   var container, rules;
   var occupationOptions = [
-    {label: "", value: ""},
-    {label: "Software Engineer", value: "software-engineer"},
-    {label: "Biz Dev", value: "biz-dev"},
-    {label: "Marketing", value: "marketing"}
+    {label: "", name: ""},
+    {label: "Software Engineer", name: "software-engineer"},
+    {label: "Biz Dev", name: "biz-dev"},
+    {label: "Marketing", name: "marketing"}
   ];
 
   beforeEach(function() {
     container = $("<div>");
     container.conditionsBuilder({
       fields: [
-        {label: "Name", value: "nameField", operators: [
-          {label: "is present", value: "present", fieldType: "none"},
-          {label: "is blank", value: "blank", fieldType: "none"},
-          {label: "is equal to", value: "equalTo", fieldType: "text"},
-          {label: "is not equal to", value: "notEqualTo", fieldType: "text"},
-          {label: "includes", value: "includes", fieldType: "text"},
-          {label: "matches regex", value: "matchesRegex", fieldType: "text"}
+        {label: "Name", name: "nameField", operators: [
+          {label: "is present", name: "present", fieldType: "none"},
+          {label: "is blank", name: "blank", fieldType: "none"},
+          {label: "is equal to", name: "equalTo", fieldType: "text"},
+          {label: "is not equal to", name: "notEqualTo", fieldType: "text"},
+          {label: "includes", name: "includes", fieldType: "text"},
+          {label: "matches regex", name: "matchesRegex", fieldType: "text"}
         ]},
-        {label: "Age", value: "ageField", operators: [
-          {label: "is present", value: "present", fieldType: "none"},
-          {label: "is blank", value: "blank", fieldType: "none"},
-          {label: "is equal to", value: "equalTo", fieldType: "text"},
-          {label: "is not equal to", value: "notEqualTo", fieldType: "text"},
-          {label: "is greater than", value: "greaterThan", fieldType: "text"},
-          {label: "is greater than or equal to", value: "greaterThanEqual", fieldType: "text"},
-          {label: "is less than", value: "lessThan", fieldType: "text"},
-          {label: "is less than or equal to", value: "lessThanEqual", fieldType: "text"},
+        {label: "Age", name: "ageField", operators: [
+          {label: "is present", name: "present", fieldType: "none"},
+          {label: "is blank", name: "blank", fieldType: "none"},
+          {label: "is equal to", name: "equalTo", fieldType: "text"},
+          {label: "is not equal to", name: "notEqualTo", fieldType: "text"},
+          {label: "is greater than", name: "greaterThan", fieldType: "text"},
+          {label: "is greater than or equal to", name: "greaterThanEqual", fieldType: "text"},
+          {label: "is less than", name: "lessThan", fieldType: "text"},
+          {label: "is less than or equal to", name: "lessThanEqual", fieldType: "text"},
         ]},
-        {label: "Occupation", value: "occupationField", options: occupationOptions, operators: [
-          {label: "is present", value: "present", fieldType: "none"},
-          {label: "is blank", value: "blank", fieldType: "none"},
-          {label: "is equal to", value: "equalTo", fieldType: "select"},
-          {label: "is not equal to", value: "notEqualTo", fieldType: "select"},
+        {label: "Occupation", name: "occupationField", options: occupationOptions, operators: [
+          {label: "is present", name: "present", fieldType: "none"},
+          {label: "is blank", name: "blank", fieldType: "none"},
+          {label: "is equal to", name: "equalTo", fieldType: "select"},
+          {label: "is not equal to", name: "notEqualTo", fieldType: "select"},
         ]}
       ],
       data: {"all": [
-        {field: "nameField", operator: "equalTo", value: "Godzilla"},
-        {field: "ageField", operator: "greaterThanEqual", value: "21"}
+        {name: "nameField", operator: "equalTo", value: "Godzilla"},
+        {name: "ageField", operator: "greaterThanEqual", value: "21"}
       ]}
     });
     rules = container.find(".all .rule");
@@ -69,8 +69,8 @@ describe('$.fn.conditionsBuilder', function() {
     it('returns serialized data', function() {
       rules.eq(0).find("input.value").val("Giuseppe");
       expect(container.conditionsBuilder("data")).toEqual({"all":[
-        {field: "nameField", operator: "equalTo", value: "Giuseppe"},
-        {field: "ageField", operator: "greaterThanEqual", value: "21"}
+        {name: "nameField", operator: "equalTo", value: "Giuseppe"},
+        {name: "ageField", operator: "greaterThanEqual", value: "21"}
       ]});
     });
   });

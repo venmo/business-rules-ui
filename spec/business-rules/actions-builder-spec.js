@@ -1,31 +1,31 @@
 describe("$.fn.actionsBuilder", function() {
   var container, rows;
   var occupationOptions = [
-    {label: "", value: ""},
-    {label: "Software Engineer", value: "software-engineer"},
-    {label: "Biz Dev", value: "biz-dev"},
-    {label: "Marketing", value: "marketing"}
+    {label: "", name: ""},
+    {label: "Software Engineer", name: "software-engineer"},
+    {label: "Biz Dev", name: "biz-dev"},
+    {label: "Marketing", name: "marketing"}
   ];
 
   beforeEach(function() {
     container = $("<div>");
     container.actionsBuilder({
       fields: [
-        {label: "Show Alert", value: "alert", fields: [
-          {label: "Message", value: "message", fieldType: "textarea"}
+        {label: "Show Alert", name: "alert", fields: [
+          {label: "Message", name: "message", fieldType: "textarea"}
         ]},
-        {label: "Update Field", value: "updateField", fields: [
-          {label: "Field", value: "fieldId", fieldType: "select", options: [
-            {label: "Name to", value: "nameField", fields: [
-              {label: "New Value", value: "newValue", fieldType: "text"}
+        {label: "Update Field", name: "updateField", fields: [
+          {label: "Field", name: "fieldId", fieldType: "select", options: [
+            {label: "Name to", name: "nameField", fields: [
+              {label: "New Value", name: "newValue", fieldType: "text"}
             ]},
-            {label: "Age to", value: "ageField", fields: [
-              {label: "New Value", value: "newValue", fieldType: "text"}
+            {label: "Age to", name: "ageField", fields: [
+              {label: "New Value", name: "newValue", fieldType: "text"}
             ]},
-            {label: "Occupation to", value: "occupationField", fields: [
-              {label: "New Value", value: "newValue", fieldType: "select", options: occupationOptions}
+            {label: "Occupation to", name: "occupationField", fields: [
+              {label: "New Value", name: "newValue", fieldType: "select", options: occupationOptions}
             ]}
-          ]},
+          ]}
         ]}
       ],
       data: [

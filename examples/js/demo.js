@@ -1,10 +1,10 @@
 var conditions, actions, nameField, ageField, occupationField, submit;
 (function($) {
   var occupationOptions = [
-    {label: "", value: ""},
-    {label: "Software Engineer", value: "software-engineer"},
-    {label: "Biz Dev", value: "biz-dev"},
-    {label: "Marketing", value: "marketing"}
+    {label: "", name: ""},
+    {label: "Software Engineer", name: "software-engineer"},
+    {label: "Biz Dev", name: "biz-dev"},
+    {label: "Marketing", name: "marketing"}
   ];
 
   function onReady() {
@@ -23,34 +23,34 @@ var conditions, actions, nameField, ageField, occupationField, submit;
   function initializeConditions() {
     conditions.conditionsBuilder({
       fields: [
-        {label: "Name", value: "nameField", operators: [
-          {label: "is present", value: "present", fieldType: "none"},
-          {label: "is blank", value: "blank", fieldType: "none"},
-          {label: "is equal to", value: "equalTo", fieldType: "text"},
-          {label: "is not equal to", value: "notEqualTo", fieldType: "text"},
-          {label: "includes", value: "includes", fieldType: "text"},
-          {label: "matches regex", value: "matchesRegex", fieldType: "text"}
+        {label: "Name", name: "nameField", operators: [
+          {label: "is present", name: "present", fieldType: "none"},
+          {label: "is blank", name: "blank", fieldType: "none"},
+          {label: "is equal to", name: "equalTo", fieldType: "text"},
+          {label: "is not equal to", name: "notEqualTo", fieldType: "text"},
+          {label: "includes", name: "includes", fieldType: "text"},
+          {label: "matches regex", name: "matchesRegex", fieldType: "text"}
         ]},
-        {label: "Age", value: "ageField", operators: [
-          {label: "is present", value: "present", fieldType: "none"},
-          {label: "is blank", value: "blank", fieldType: "none"},
-          {label: "is equal to", value: "equalTo", fieldType: "text"},
-          {label: "is not equal to", value: "notEqualTo", fieldType: "text"},
-          {label: "is greater than", value: "greaterThan", fieldType: "text"},
-          {label: "is greater than or equal to", value: "greaterThanEqual", fieldType: "text"},
-          {label: "is less than", value: "lessThan", fieldType: "text"},
-          {label: "is less than or equal to", value: "lessThanEqual", fieldType: "text"},
+        {label: "Age", name: "ageField", operators: [
+          {label: "is present", name: "present", fieldType: "none"},
+          {label: "is blank", name: "blank", fieldType: "none"},
+          {label: "is equal to", name: "equalTo", fieldType: "text"},
+          {label: "is not equal to", name: "notEqualTo", fieldType: "text"},
+          {label: "is greater than", name: "greaterThan", fieldType: "text"},
+          {label: "is greater than or equal to", name: "greaterThanEqual", fieldType: "text"},
+          {label: "is less than", name: "lessThan", fieldType: "text"},
+          {label: "is less than or equal to", name: "lessThanEqual", fieldType: "text"},
         ]},
-        {label: "Occupation", value: "occupationField", options: occupationOptions, operators: [
-          {label: "is present", value: "present", fieldType: "none"},
-          {label: "is blank", value: "blank", fieldType: "none"},
-          {label: "is equal to", value: "equalTo", fieldType: "select"},
-          {label: "is not equal to", value: "notEqualTo", fieldType: "select"},
+        {label: "Occupation", name: "occupationField", options: occupationOptions, operators: [
+          {label: "is present", name: "present", fieldType: "none"},
+          {label: "is blank", name: "blank", fieldType: "none"},
+          {label: "is equal to", name: "equalTo", fieldType: "select"},
+          {label: "is not equal to", name: "notEqualTo", fieldType: "select"},
         ]}
       ],
       data: {"all": [
-        {field: "nameField", operator: "equalTo", value: "Godzilla"},
-        {field: "ageField", operator: "greaterThanEqual", value: "21"}
+        {name: "nameField", operator: "equalTo", value: "Godzilla"},
+        {name: "ageField", operator: "greaterThanEqual", value: "21"}
       ]}
     });
   }
@@ -58,19 +58,19 @@ var conditions, actions, nameField, ageField, occupationField, submit;
   function initializeActions() {
     actions.actionsBuilder({
       fields: [
-        {label: "Show Alert", value: "alert", fields: [
-          {label: "Message", value: "message", fieldType: "textarea"}
+        {label: "Show Alert", name: "alert", fields: [
+          {label: "Message", name: "message", fieldType: "textarea"}
         ]},
-        {label: "Update Field", value: "updateField", fields: [
-          {label: "Field", value: "fieldId", fieldType: "select", options: [
-            {label: "Name to", value: "nameField", fields: [
-              {label: "New Value", value: "newValue", fieldType: "text"}
+        {label: "Update Field", name: "updateField", fields: [
+          {label: "Field", name: "fieldId", fieldType: "select", options: [
+            {label: "Name to", name: "nameField", fields: [
+              {label: "New Value", name: "newValue", fieldType: "text"}
             ]},
-            {label: "Age to", value: "ageField", fields: [
-              {label: "New Value", value: "newValue", fieldType: "text"}
+            {label: "Age to", name: "ageField", fields: [
+              {label: "New Value", name: "newValue", fieldType: "text"}
             ]},
-            {label: "Occupation to", value: "occupationField", fields: [
-              {label: "New Value", value: "newValue", fieldType: "select", options: occupationOptions}
+            {label: "Occupation to", name: "occupationField", fields: [
+              {label: "New Value", name: "newValue", fieldType: "select", options: occupationOptions}
             ]}
           ]},
         ]}
@@ -91,7 +91,7 @@ var conditions, actions, nameField, ageField, occupationField, submit;
   function initializeForm() {
     for(var i=0; i < occupationOptions.length; i++) {
       var o = occupationOptions[i];
-      occupationField.append($("<option>", {value: o.value, text: o.label}));
+      occupationField.append($("<option>", {value: o.name, text: o.label}));
     }
 
     submit.click(function(e) {
@@ -108,7 +108,9 @@ var conditions, actions, nameField, ageField, occupationField, submit;
       var actionsAdapter = {
         alert: function(data) { alert(data.find("message")); },
         updateField: function(data) {
+          console.log("data", data);
           var fieldId = data.find("fieldId");
+          console.log("fieldId", fieldId);
           var field = $("#" + fieldId);
           var val = data.find("fieldId", "newValue");
           field.val(val);
