@@ -117,3 +117,84 @@ var data = $("#myDiv").actionsBuilder("data");
 Each action data object has a `name` that matches the corresponding field's `value`, and a `value` property with the
 user-entered value. It may also have a `fields` array of nested action data objects, which correspond to the nested
 field structure of the builder.
+
+## BusinessRules.RuleEngine
+
+While the `ConditionsBuilder` and `ActionsBuilder` give us a UI to build business rule configurations, we still need
+something to interpret the configuration, apply the logic and conditionally run the actions. This is where the
+`BusinessRules.RuleEngine` comes in.
+
+The `RuleEngine` is initialized with a `conditions` object and an `actions` array, just as they would be when fetched
+from the UI using `conditionsBuilder("data")` and `actionsBuilder("data")`. This would be a common way of instantiating
+a `RuleEngine`:
+
+```javascript
+var engine = new BusinessRules.RuleEngine({
+  conditions: $("#myConditions").conditionsBuilder("data"),
+  actions: $("#myActions").actionsBuilder("data")
+});
+```
+
+Once your engine has been instantiated, you can use the `#run` method to apply the conditional logic to a set of data,
+and then conditionally run the actions. Since the engine is only responsible for running logic and shouldn't have to
+be aware of the actual data, you need to pass in an object that represents the context to run conditionals on,
+and another object with functions that map to the actions. For example:
+
+```javascript
+var engine = new BusinessRules.RuleEngine({
+  conditions: {all: [{field: "name", operator: "present", value: ""}, {field: "age", operator: "greaterThanEqual", value: "21"}]},
+  actions: [{name: "action-select", value: "giveDrink", fields: [{name: "drinkType", value: "martini"}]}]
+});
+
+var conditionsAdapter = {name: "Joe", age: 22};
+var actionsAdapter = {giveDrink: function(data) { alert("Gave user a " + data.find("drinkType")); } };
+
+engine.run(conditionsAdapter, actionsAdapter);
+```
+
+Values used in the `conditionsAdapter` can be simple strings and numbers, but it can also be a function that will be lazily executed.
+For example, this adapter would pull the name and age from fields on the page (a more likely scenario than hard coded values):
+
+```javascript
+var conditionsAdapter = {
+  name: function() { $("#nameField").val(); },
+  age: function() { $("#ageField").val(); }
+};
+```
+
+The `BusinessRules.RuleEngine` object can be used in either the browser or in a server environment (ie Node.js). It could also
+be ported to another language simply enough, or run inside a JavaScript runtime within Ruby, Java, etc.
+
+### Conditional Operators
+
+The `RuleEngine` comes with the following standard operators that can be used inside conditionals:
+
+* present
+* blank
+* equalTo
+* notEqualTo
+* greaterThan
+* greaterThanEqual
+* lessThan
+* lessThanEqual
+* includes
+* matchesRegex
+
+Custom operators can be added to a `RuleEngine` using the `addOperators` method:
+
+```javascript
+var engine = new BusinessRules.RuleEngine({
+  conditions: {all: [{field: "password", operator: "longerThan", "6"}]},
+  actions: []
+});
+
+engine.addOperators({
+  longerThan: function(actual, length) {
+    return actual.length > parseInt(length, 10);
+  }
+});
+```
+
+The `addOperators` method also allows you to override the standard operators if, heaven forbid, you find that necessary.
+
+
