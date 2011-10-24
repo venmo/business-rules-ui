@@ -1,5 +1,7 @@
 # Business Rules for JavaScript
 
+[VIEW THE DEMO NOW](http://chrisjpowers.com/business-rules)
+
 When you're working in a business environment (especially an "enterprisy" environment),
 business rules make the world go 'round. Business-level decision makers need to be able
 to alter application behavior and logic with minimal technical invasiveness.
