@@ -6,10 +6,10 @@ When you're working in a business environment (especially an "enterprisy" enviro
 business rules make the world go 'round. Business-level decision makers need to be able
 to alter application behavior and logic with minimal technical invasiveness.
 
-Usually, business rule engines come packaged as $100K` Java installations and a gaggle
+Usually, business rule engines come packaged as $100K Java installations and a gaggle
 of business consultants. Let's just call this a lighter-weight solution.
 
-The goals of this library are to:
+The goal of this library is to:
 
 1. Give JavaScript developers drop-in jQuery UI widgets for building business rule interfaces.
 2. Give developers a rule engine that can be ported to any server-side language for running business rules built with the UI tools.
