@@ -177,6 +177,7 @@ var conditionsAdapter = {
     });
   }
 };
+```
 
 The `BusinessRules.RuleEngine` object can be used in either the browser or in a server environment (ie Node.js). It could also
 be ported to another language simply enough, or run inside a JavaScript runtime within Ruby, Java, etc.
