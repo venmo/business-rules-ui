@@ -1,8 +1,8 @@
-describe('BusinessRules.RuleEngine', function() {
+describe('RuleEngine', function() {
   var engine;
 
   beforeEach(function() {
-    engine = new BusinessRules.RuleEngine();
+    engine = new RuleEngine();
   });
 
   describe('initialization', function() {
@@ -11,7 +11,7 @@ describe('BusinessRules.RuleEngine', function() {
       conditions = jasmine.createSpy("conditions");
       actions = jasmine.createSpy("actions");
       rule = {conditions: conditions, actions: actions};
-      engine = new BusinessRules.RuleEngine(rule);
+      engine = new RuleEngine(rule);
     });
 
     it('adds the given conditions', function() {
