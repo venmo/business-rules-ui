@@ -197,6 +197,18 @@ engine.addOperators({
 });
 ```
 
+It is also possible to create *asynchronous* operators if your logic cannot be run synchronously.
+To do so, simply have your operator function accept a third callback param and call it when
+you have your result:
+
+```javascript
+engine.addOperators({
+  delayedOperator: function(actual, target, done) {
+    setTimeout(function() { done(true); }, 1000);
+  }
+});
+```
+
 The `addOperators` method also allows you to override the standard operators if, heaven forbid, you find that necessary.
 
 ### Action Functions

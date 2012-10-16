@@ -217,6 +217,42 @@ describe('BusinessRules.RuleEngine', function() {
     });
   });
 
+  describe('with a callback', function() {
+    describe("with async code", function() {
+      beforeEach(function() {
+        engine.addOperators({
+          delayedEqualTo: function(actual, target, done) {
+            var delayed = function() { done("" + actual === "" + target); };
+            setTimeout(delayed, 1);
+          }
+        });
+        engine.conditions = {all: [{name: "num", operator: "delayedEqualTo", value: "123"}]};
+      });
+
+      it("calls the callback for async matchers", function() {
+        var cb = jasmine.createSpy("listener");
+        cb.myName = "woot";
+        engine.matches({num: 123}, cb);
+        waits(10);
+        runs(function() {
+          expect(cb).toHaveBeenCalledWith(true);
+        });
+      });
+    });
+
+    describe("with synchronous code", function() {
+      beforeEach(function() {
+        engine.conditions = {all: [{name: "num", operator: "equalTo", value: "123"}]};
+      });
+
+      it("calls the callback", function() {
+        var cb = jasmine.createSpy("listener");
+        engine.matches({num: 123}, cb);
+        expect(cb).toHaveBeenCalledWith(true);
+      });
+    });
+  });
+
   describe('custom operators', function() {
     beforeEach(function() {
       engine.conditions = {all: [{name: "name", operator: "longerThan", value: "5"}]};
@@ -318,7 +354,9 @@ describe('BusinessRules.RuleEngine', function() {
 
     context("with matching conditions", function() {
       beforeEach(function() {
-        spyOn(engine, "matches").andReturn(true);
+        spyOn(engine, "matches").andCallFake(function(conditions, cb) {
+          cb(true);
+        });
         engine.run(conditions, actions);
       });
 
