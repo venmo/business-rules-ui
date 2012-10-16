@@ -222,7 +222,9 @@ describe('RuleEngine', function() {
       beforeEach(function() {
         engine.addOperators({
           delayedEqualTo: function(actual, target, done) {
-            var delayed = function() { done("" + actual === "" + target); };
+            var delayed = function() {
+              done(null, "" + actual === "" + target);
+            };
             setTimeout(delayed, 1);
           }
         });
@@ -231,11 +233,10 @@ describe('RuleEngine', function() {
 
       it("calls the callback for async matchers", function() {
         var cb = jasmine.createSpy("listener");
-        cb.myName = "woot";
         engine.matches({num: 123}, cb);
         waits(10);
         runs(function() {
-          expect(cb).toHaveBeenCalledWith(true);
+          expect(cb).toHaveBeenCalledWith(null, true);
         });
       });
     });
@@ -248,7 +249,7 @@ describe('RuleEngine', function() {
       it("calls the callback", function() {
         var cb = jasmine.createSpy("listener");
         engine.matches({num: 123}, cb);
-        expect(cb).toHaveBeenCalledWith(true);
+        expect(cb).toHaveBeenCalledWith(null, true);
       });
     });
 
@@ -269,7 +270,7 @@ describe('RuleEngine', function() {
         engine.matches(adapter, cb);
         waits(10);
         runs(function() {
-          expect(cb).toHaveBeenCalledWith(true);
+          expect(cb).toHaveBeenCalledWith(null, true);
         });
       });
     });
