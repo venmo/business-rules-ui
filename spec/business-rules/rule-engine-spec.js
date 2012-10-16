@@ -218,7 +218,7 @@ describe('BusinessRules.RuleEngine', function() {
   });
 
   describe('with a callback', function() {
-    describe("with async code", function() {
+    describe("with async operators", function() {
       beforeEach(function() {
         engine.addOperators({
           delayedEqualTo: function(actual, target, done) {
@@ -240,7 +240,7 @@ describe('BusinessRules.RuleEngine', function() {
       });
     });
 
-    describe("with synchronous code", function() {
+    describe("with synchronous operators", function() {
       beforeEach(function() {
         engine.conditions = {all: [{name: "num", operator: "equalTo", value: "123"}]};
       });
@@ -249,6 +249,28 @@ describe('BusinessRules.RuleEngine', function() {
         var cb = jasmine.createSpy("listener");
         engine.matches({num: 123}, cb);
         expect(cb).toHaveBeenCalledWith(true);
+      });
+    });
+
+    describe("with asynchronous value functions", function() {
+      beforeEach(function() {
+        engine.conditions = {all: [{name: "num", operator: "equalTo", value: "123"}]};
+      });
+
+      it("calls the callback after running the logic", function() {
+        var cb = jasmine.createSpy("listener");
+        var adapter = {
+          num: function(done) {
+            setTimeout(function() {
+              done(123);
+            }, 5);
+          }
+        };
+        engine.matches(adapter, cb);
+        waits(10);
+        runs(function() {
+          expect(cb).toHaveBeenCalledWith(true);
+        });
       });
     });
   });

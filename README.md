@@ -164,6 +164,20 @@ var conditionsAdapter = {
 };
 ```
 
+It is also possible to use *asynchronous* functions in your conditionsAdapter. To do so,
+have your function accept a callback function and call it when you have your value.
+
+```javascript
+var conditionsAdapter = {
+  logoVisible: function(done) {
+    // Cannot determine if logo is visible until DOM ready
+    $(function() {
+      var visible = $("#logo").is(":visible");
+      done(visible);
+    });
+  }
+};
+
 The `BusinessRules.RuleEngine` object can be used in either the browser or in a server environment (ie Node.js). It could also
 be ported to another language simply enough, or run inside a JavaScript runtime within Ruby, Java, etc.
 
