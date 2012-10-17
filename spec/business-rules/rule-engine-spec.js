@@ -368,8 +368,9 @@ describe('RuleEngine', function() {
   });
 
   describe('run', function() {
-    var conditions, actions;
+    var conditions, actions, listener, result;
     beforeEach(function() {
+      listener = jasmine.createSpy("listener");
       spyOn(engine, "runActions");
       conditions = jasmine.createSpy("conditions");
       actions = jasmine.createSpy("actions");
@@ -378,13 +379,21 @@ describe('RuleEngine', function() {
     context("with matching conditions", function() {
       beforeEach(function() {
         spyOn(engine, "matches").andCallFake(function(conditions, cb) {
-          cb(true);
+          cb(null, true);
         });
-        engine.run(conditions, actions);
+        result = engine.run(conditions, actions, listener);
       });
 
       it('runs the actions', function() {
         expect(engine.runActions).toHaveBeenCalledWith(actions);
+      });
+
+      it('returns true', function() {
+        expect(result).toBeTruthy();
+      });
+
+      it('calls the callback with true', function() {
+        expect(listener).toHaveBeenCalledWith(null, true);
       });
     });
 
