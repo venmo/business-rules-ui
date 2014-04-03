@@ -1,11 +1,6 @@
 var conditions, actions, nameField, ageField, occupationField, submit, allData;
 (function($) {
-  var occupationOptions = [
-    {label: "", name: ""},
-    {label: "Software Engineer", name: "software-engineer"},
-    {label: "Biz Dev", name: "biz-dev"},
-    {label: "Marketing", name: "marketing"}
-  ];
+  var occupationOptions = [ "Software Engineer", "Biz Dev", "Marketing" ];
 
   function getInitialData() {
     return {"variables": [
@@ -71,11 +66,7 @@ var conditions, actions, nameField, ageField, occupationField, submit, allData;
   }
 
   function initializeConditions(data) {
-    variables = $.map(data.variables, function(variable) {
-        variable.operators = data.variable_type_operators[variable.variable_type];
-        return variable;
-    });
-    conditions.conditionsBuilder({fields: variables});
+    conditions.conditionsBuilder(data)
   }
 
   function initializeConditionsOld() {

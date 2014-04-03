@@ -1,44 +1,50 @@
 describe('$.fn.conditionsBuilder', function() {
   var container, rules;
-  var occupationOptions = [
-    {label: "", name: ""},
-    {label: "Software Engineer", name: "software-engineer"},
-    {label: "Biz Dev", name: "biz-dev"},
-    {label: "Marketing", name: "marketing"}
-  ];
+  var occupationOptions = [ "Software Engineer", "Biz Dev", "Marketing" ];
 
   beforeEach(function() {
     container = $("<div>");
     container.conditionsBuilder({
-      fields: [
-        {label: "Name", name: "nameField", operators: [
-          {label: "is present", name: "present", field_type: "none"},
-          {label: "is blank", name: "blank", field_type: "none"},
-          {label: "is equal to", name: "equalTo", field_type: "text"},
-          {label: "is not equal to", name: "notEqualTo", field_type: "text"},
-          {label: "includes", name: "includes", field_type: "text"},
-          {label: "matches regex", name: "matchesRegex", field_type: "text"}
-        ]},
-        {label: "Age", name: "ageField", operators: [
-          {label: "is present", name: "present", field_type: "none"},
-          {label: "is blank", name: "blank", field_type: "none"},
-          {label: "is equal to", name: "equalTo", field_type: "text"},
-          {label: "is not equal to", name: "notEqualTo", field_type: "text"},
-          {label: "is greater than", name: "greaterThan", field_type: "text"},
-          {label: "is greater than or equal to", name: "greaterThanEqual", field_type: "text"},
-          {label: "is less than", name: "lessThan", field_type: "text"},
-          {label: "is less than or equal to", name: "lessThanEqual", field_type: "text"},
-        ]},
-        {label: "Occupation", name: "occupationField", options: occupationOptions, operators: [
-          {label: "is present", name: "present", field_type: "none"},
-          {label: "is blank", name: "blank", field_type: "none"},
-          {label: "is equal to", name: "equalTo", field_type: "select"},
-          {label: "is not equal to", name: "notEqualTo", field_type: "select"},
-        ]}
+      variables: [
+            { "name": "expiration_days",
+              "label": "Days until expiration",
+              "variable_type": "numeric",
+              "options": []},
+            { "name": "current_month",
+              "label": "Current Month",
+              "variable_type": "string",
+              "options": []},
+            { "name": "goes_well_with",
+              "label": "Goes Well With",
+              "variable_type": "select",
+              "options": ["Eggnog", "Cookies", "Beef Jerkey"]}
       ],
+      variable_type_operators: {
+            "numeric": [ {"name": "equal_to",
+                          "label": "Equal To",
+                          "field_type": "numeric"},
+                         {"name": "less_than",
+                          "label": "Less Than",
+                          "field_type": "numeric"},
+                         {"name": "greater_than",
+                          "label": "Greater Than",
+                          "field_type": "numeric"}],
+            "string": [ { "name": "equal_to",
+                          "label": "Equal To",
+                          "field_type": "text"},
+                        { "name": "non_empty",
+                          "label": "Non Empty",
+                          "field_type": "none"}],
+            "select": [ { "name": "contains",
+                          "label": "Contains",
+                          "field_type": "select"},
+                        { "name": "does_not_contain",
+                          "label": "Does Not Contain",
+                          "field_type": "select"}]
+      },
       data: {"all": [
-        {name: "nameField", operator: "equalTo", value: "Godzilla"},
-        {name: "ageField", operator: "greaterThanEqual", value: "21"}
+        {name: "expiration_days", operator: "greater_than", value: 3},
+        {name: "current_month", operator: "equal_to", value: "December"}
       ]}
     });
     rules = container.find(".all .rule");
@@ -46,12 +52,12 @@ describe('$.fn.conditionsBuilder', function() {
 
   it('adds a condition row for each data point', function() {
     expect(rules.length).toEqual(2);
-    expect(rules.eq(0).find("select.field").val()).toEqual("nameField");
-    expect(rules.eq(0).find("select.operator").val()).toEqual("equalTo");
-    expect(rules.eq(0).find("input.value").val()).toEqual("Godzilla");
-    expect(rules.eq(1).find("select.field").val()).toEqual("ageField");
-    expect(rules.eq(1).find("select.operator").val()).toEqual("greaterThanEqual");
-    expect(rules.eq(1).find("input.value").val()).toEqual("21");
+    expect(rules.eq(0).find("select.field").val()).toEqual("expiration_days");
+    expect(rules.eq(0).find("select.operator").val()).toEqual("greater_than");
+    expect(rules.eq(0).find("input.value").val()).toEqual('3');
+    expect(rules.eq(1).find("select.field").val()).toEqual("current_month");
+    expect(rules.eq(1).find("select.operator").val()).toEqual("equal_to");
+    expect(rules.eq(1).find("input.value").val()).toEqual("December");
   });
 
   it('gives each row a remove link', function() {
@@ -65,12 +71,30 @@ describe('$.fn.conditionsBuilder', function() {
     expect(container.find(".all .rule").length).toEqual(3);
   });
 
+  it('denormalizes the response from the server', function() {
+    var variables = [{ "name": "expiration_days",
+                      "label": "Days until expiration",
+                      "variable_type": "numeric",
+                      "options": []}];
+    var operators = { "numeric": [ {"name": "equal_to",
+                                  "label": "Equal To",
+                                  "field_type": "numeric"},
+                                 {"name": "less_than",
+                                  "label": "Less Than",
+                                  "field_type": "numeric"}]};
+    var results = ConditionsBuilder.prototype.denormalizeOperators(variables, operators);
+    expect(results.length).toEqual(1);
+    expect(results[0].operators.length).toEqual(2);
+    expect(results[0].operators[0].name).toEqual("equal_to");
+    expect(results[0].operators[1].name).toEqual("less_than");
+  });
+
   describe('$.fn.conditionsBuilder("data")', function() {
     it('returns serialized data', function() {
-      rules.eq(0).find("input.value").val("Giuseppe");
+      rules.eq(0).find("input.value").val("4");
       expect(container.conditionsBuilder("data")).toEqual({"all":[
-        {name: "nameField", operator: "equalTo", value: "Giuseppe"},
-        {name: "ageField", operator: "greaterThanEqual", value: "21"}
+        {name: "expiration_days", operator: "greater_than", value: 4},
+        {name: "current_month", operator: "equal_to", value: "December"}
       ]});
     });
   });
