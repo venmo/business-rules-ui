@@ -145,27 +145,10 @@ var conditions, actions, nameField, ageField, occupationField, submit, allData;
 
     submit.click(function(e) {
       e.preventDefault();
-      var engine = new BusinessRules.RuleEngine({
-        conditions: conditions.conditionsBuilder("data"),
-        actions: actions.actionsBuilder("data")
-      });
-      var conditionsAdapter = {
-        nameField: nameField.val(), 
-        ageField: ageField.val(),
-        occupationField: occupationField.val()
-      };
-      var actionsAdapter = {
-        alert: function(data) { alert(data.find("message")); },
-        updateField: function(data) {
-          console.log("data", data);
-          var fieldId = data.find("fieldId");
-          console.log("fieldId", fieldId);
-          var field = $("#" + fieldId);
-          var val = data.find("fieldId", "newValue");
-          field.val(val);
-        }        
-      };
-      engine.run(conditionsAdapter, actionsAdapter);
+      console.log("CONDITIONS");
+      console.log(JSON.stringify(conditions.conditionsBuilder("data")));
+      console.log("ACTIONS");
+      console.log(JSON.stringify(actions.actionsBuilder("data")));
     });
   }
   $(onReady);
