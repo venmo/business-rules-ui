@@ -11,31 +11,20 @@ describe("$.fn.actionsBuilder", function() {
     container = $("<div>");
     container.actionsBuilder({
       fields: [
-        {label: "Show Alert", name: "alert", fields: [
-          {label: "Message", name: "message", fieldType: "textarea"}
-        ]},
-        {label: "Update Field", name: "updateField", fields: [
-          {label: "Field", name: "fieldId", fieldType: "select", options: [
-            {label: "Name to", name: "nameField", fields: [
-              {label: "New Value", name: "newValue", fieldType: "text"}
-            ]},
-            {label: "Age to", name: "ageField", fields: [
-              {label: "New Value", name: "newValue", fieldType: "text"}
-            ]},
-            {label: "Occupation to", name: "occupationField", fields: [
-              {label: "New Value", name: "newValue", fieldType: "select", options: occupationOptions}
-            ]}
-          ]}
-        ]}
+        { name: "put_on_sale",
+          label: "Put On Sale",
+          params: {sale_percentage: "numeric"}},
+        { name: "order_more",
+          label: "Order More",
+          params: {number_to_order: "numeric"}}
       ],
       data: [
-        {name: "action-select", value: "alert", fields: [
-          {name: "message", value: "Hello world!"}
+        //TODO: make fields params
+        {name: "action-select", value: "put_on_sale", fields: [
+          {name: "sale_percentage", value: 10}
         ]},
-        {name: "action-select", value: "updateField", fields: [
-          {name: "fieldId", value: "occupationField", fields: [
-            {name: "newValue", value: "marketing"}
-          ]}
+        {name: "action-select", value: "order_more", fields: [
+          {name: "number_to_order", value: 50}
         ]}
       ]
     });
@@ -44,14 +33,14 @@ describe("$.fn.actionsBuilder", function() {
 
   it('builds an action row for each action data', function() {
     expect(rows.length).toEqual(2);
-    expect(rows.eq(0).find(".action-select").val()).toEqual("alert");
-    expect(rows.eq(0).find(".field textarea").attr("name")).toEqual("message");
-    expect(rows.eq(0).find(".field textarea").val()).toEqual("Hello world!");
-    expect(rows.eq(1).find(".action-select").val()).toEqual("updateField");
-    expect(rows.eq(1).find(".field select").attr("name")).toEqual("fieldId");
-    expect(rows.eq(1).find(".field select").val()).toEqual("occupationField");
-    expect(rows.eq(1).find(".field .field select").attr("name")).toEqual("newValue");
-    expect(rows.eq(1).find(".field .field select").val()).toEqual("marketing");
+    expect(rows.eq(0).find(".action-select").val()).toEqual("put_on_sale");
+    expect(rows.eq(0).find(".field input").attr("name")).toEqual("sale_percentage");
+    expect(rows.eq(0).find(".field input").val()).toEqual("10");
+    expect(rows.eq(1).find(".action-select").val()).toEqual("order_more");
+    expect(rows.eq(1).find(".field input").attr("name")).toEqual("number_to_order");
+    expect(rows.eq(1).find(".field input").val()).toEqual("50");
+    // expect(rows.eq(1).find(".field .field select").attr("name")).toEqual("newValue");
+    // expect(rows.eq(1).find(".field .field select").val()).toEqual("marketing");
   });
 
   it('gives each row a remove link', function() {
@@ -67,15 +56,13 @@ describe("$.fn.actionsBuilder", function() {
 
   describe('$.fn.actionsBuilder("data")', function() {
     it('returns serialized data', function() {
-      rows.eq(0).find("textarea").val("Goodbye world!");
+      rows.eq(0).find("input").val("40");
       expect(container.actionsBuilder("data")).toEqual([
-        {name: "action-select", value: "alert", fields: [
-          {name: "message", value: "Goodbye world!"}
+        {name: "action-select", value: "put_on_sale", fields: [
+          {name: "sale_percentage", value: 40}
         ]},
-        {name: "action-select", value: "updateField", fields: [
-          {name: "fieldId", value: "occupationField", fields: [
-            {name: "newValue", value: "marketing"}
-          ]}
+        {name: "action-select", value: "order_more", fields: [
+          {name: "number_to_order", value: 50}
         ]}
       ]);
     });

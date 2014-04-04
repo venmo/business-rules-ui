@@ -106,23 +106,14 @@ var conditions, actions, nameField, ageField, occupationField, submit, allData;
 
   function initializeActions() {
     actions.actionsBuilder({
+        //TODO: change fields to actions
       fields: [
-        {label: "Show Alert", name: "alert", fields: [
-          {label: "Message", name: "message", fieldType: "textarea"}
-        ]},
-        {label: "Update Field", name: "updateField", fields: [
-          {label: "Field", name: "fieldId", fieldType: "select", options: [
-            {label: "Name to", name: "nameField", fields: [
-              {label: "New Value", name: "newValue", fieldType: "text"}
-            ]},
-            {label: "Age to", name: "ageField", fields: [
-              {label: "New Value", name: "newValue", fieldType: "text"}
-            ]},
-            {label: "Occupation to", name: "occupationField", fields: [
-              {label: "New Value", name: "newValue", fieldType: "select", options: occupationOptions}
-            ]}
-          ]},
-        ]}
+        { name: "put_on_sale",
+          label: "Put On Sale",
+          params: {sale_percentage: "numeric"}},
+        { name: "order_more",
+          label: "Order More",
+          params: {number_to_order: "numeric"}}
       ],
       data: [
         {name: "action-select", value: "alert", fields: [

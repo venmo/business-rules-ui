@@ -56,10 +56,6 @@
   display: inline;
 }
 
-.action label {
-  display: none;
-}
-
 .action select, .action input, .action textarea {
   margin-right: 10px;
 }
