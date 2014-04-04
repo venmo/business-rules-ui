@@ -1,16 +1,10 @@
 describe("$.fn.actionsBuilder", function() {
   var container, rows;
-  var occupationOptions = [
-    {label: "", name: ""},
-    {label: "Software Engineer", name: "software-engineer"},
-    {label: "Biz Dev", name: "biz-dev"},
-    {label: "Marketing", name: "marketing"}
-  ];
 
   beforeEach(function() {
     container = $("<div>");
     container.actionsBuilder({
-      fields: [
+      actions: [
         { name: "put_on_sale",
           label: "Put On Sale",
           params: {sale_percentage: "numeric"}},
@@ -19,11 +13,10 @@ describe("$.fn.actionsBuilder", function() {
           params: {number_to_order: "numeric"}}
       ],
       data: [
-        //TODO: make fields params
-        {name: "action-select", value: "put_on_sale", fields: [
+        {name: "action-select", value: "put_on_sale", params: [
           {name: "sale_percentage", value: 10}
         ]},
-        {name: "action-select", value: "order_more", fields: [
+        {name: "action-select", value: "order_more", params: [
           {name: "number_to_order", value: 50}
         ]}
       ]
@@ -58,10 +51,10 @@ describe("$.fn.actionsBuilder", function() {
     it('returns serialized data', function() {
       rows.eq(0).find("input").val("40");
       expect(container.actionsBuilder("data")).toEqual([
-        {name: "action-select", value: "put_on_sale", fields: [
+        {name: "action-select", value: "put_on_sale", params: [
           {name: "sale_percentage", value: 40}
         ]},
-        {name: "action-select", value: "order_more", fields: [
+        {name: "action-select", value: "order_more", params: [
           {name: "number_to_order", value: 50}
         ]}
       ]);

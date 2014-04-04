@@ -106,8 +106,7 @@ var conditions, actions, nameField, ageField, occupationField, submit, allData;
 
   function initializeActions() {
     actions.actionsBuilder({
-        //TODO: change fields to actions
-      fields: [
+      actions: [
         { name: "put_on_sale",
           label: "Put On Sale",
           params: {sale_percentage: "numeric"}},
