@@ -1,0 +1,84 @@
+#conditions, #actions {
+  margin: 20px 0;
+}
+
+#conditions > .conditional > .remove, #actions > .conditional > .remove {
+  display: none;
+}
+
+#error_message_wrapper {
+  margin: 20px 0;
+}
+
+.conditional {
+  padding-left: 60px;
+}
+
+  .conditional .all-any-wrapper {
+    margin: 5px 20px 5px -60px;
+    display: -moz-inline-stack;
+    display: inline-block;
+  }
+
+.all-any {
+  margin-right: 10px;
+}
+
+.all-any-wrapper, .conditional, .rule {
+  margin: 10px 0;
+}
+
+.add-rule, .add-condition, .remove {
+  margin: auto 5px;
+}
+
+.remove {
+  color: red;
+}
+
+.rule input {
+  width: 250px;
+}
+
+.rule select {
+  margin-right: 10px;
+}
+
+.action-buttons {
+  margin: 20px 0;
+}
+
+.action {
+  margin: 10px 0;
+}
+
+.action .subfields, .action .subfields .field {
+  display: inline;
+}
+
+.action select, .action input, .action textarea {
+  margin-right: 10px;
+}
+
+.action textarea, .action input {
+  width: 250px;
+}
+
+.action textarea {
+  vertical-align: top;
+  height: 50px;
+}
+
+#demo-form {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 20px;
+  width: 300px;
+  background: #ddd;
+}
+
+  #demo-form div {
+    margin: 10px 0;
+  }
+
