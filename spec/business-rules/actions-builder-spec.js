@@ -50,14 +50,17 @@ describe("$.fn.actionsBuilder", function() {
   describe('$.fn.actionsBuilder("data")', function() {
     it('returns serialized data', function() {
       rows.eq(0).find("input").val("40");
-      expect(container.actionsBuilder("data")).toEqual([
-        {name: "action-select", value: "put_on_sale", params: [
-          {name: "sale_percentage", value: 40}
-        ]},
-        {name: "action-select", value: "order_more", params: [
-          {name: "number_to_order", value: 50}
-        ]}
-      ]);
+      expect(container.actionsBuilder("data")).toEqual([{
+        name: "put_on_sale",
+        params: {
+          sale_percentage: '40'
+        }
+      }, {
+        name: "order_more",
+        params: {
+          number_to_order: '50'
+        }
+      }]);
     });
   });
 });
