@@ -1,8 +1,5 @@
 # Business Rules for JavaScript
 
-This is from a fork of https://github.com/chrisjpowers/business-rules
-
-[VIEW THE DEMO NOW](http://chrisjpowers.com/business-rules)
 
 When you're working in a business environment (especially an "enterprisy" environment),
 business rules make the world go 'round. Business-level decision makers need to be able
@@ -254,3 +251,5 @@ var actionsAdapter = {
   }
 };
 ```
+
+This is from a fork of https://github.com/chrisjpowers/business-rules
