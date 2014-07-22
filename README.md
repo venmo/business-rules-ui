@@ -13,12 +13,26 @@ The goal of this library is to:
 1. Give JavaScript developers drop-in jQuery UI widgets for building business rule interfaces.
 2. Give developers a rule engine that can be ported to any server-side language for running business rules built with the UI tools.
 
-## Examples
+## Getting Started
 
-Checkout the examples directory if you just want to dive in, it demonstrates all the features
-pretty well!
+Try out the [demo here](http://venmo.github.io/business-rules-ui/examples/).
 
-## $.fn.conditionsBuilder()
+You can build rules based on the defined variables and operators (they're
+hard-coded in this demo, but they'd normally be sent dynamically from the
+server or rendered server-side). When you click `submit` the json document
+containing the rules you just defined gets printed to `console.log`.
+
+The demo code is just the `examples` directory which is a great place to get
+started, it demonstrates all the features pretty well!
+
+If you want to play around with the example code and try out making changes,
+just fork the project and make some changes in the `gh-pages` branch. When you
+push it they'll propagate to
+`<your-username>.github.io/business-rules-ui/examples/`
+
+## API
+
+### $.fn.conditionsBuilder()
 
 The `$.fn.conditionsBuilder()` method has two forms, the first being:
 
@@ -61,7 +75,7 @@ used to create a new `ConditionsBuilder` for editing. This data object will also
 a `BusinessRules.RuleEngine` object for running the conditional logic.
 
 
-## $.fn.actionsBuilder()
+### $.fn.actionsBuilder()
 
 The `$.fn.actionsBuilder` has an identical API to `$.fn.conditionsBuilder`, but it uses a different data structure.
 The `fields` property should be an array of action objects. Each action object has a `label` and `name`.
@@ -119,7 +133,7 @@ Each action data object has a `name` that matches the corresponding field's `val
 user-entered value. It may also have a `fields` array of nested action data objects, which correspond to the nested
 field structure of the builder.
 
-## BusinessRules.RuleEngine
+### BusinessRules.RuleEngine
 
 While the `ConditionsBuilder` and `ActionsBuilder` give us a UI to build business rule configurations, we still need
 something to interpret the configuration, apply the logic and conditionally run the actions. This is where the
@@ -252,4 +266,8 @@ var actionsAdapter = {
 };
 ```
 
-This is from a fork of https://github.com/chrisjpowers/business-rules
+## License
+
+MIT - see the LICENSE.txt file.
+
+This is from a fork of https://github.com/chrisjpowers/business-rules, the semantics have been modified a bit and we have split off the UI code so it can be used with a RESTful API to let the business logic run on the server.
