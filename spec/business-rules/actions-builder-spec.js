@@ -7,10 +7,10 @@ describe("$.fn.actionsBuilder", function() {
       actions: [
         { name: "put_on_sale",
           label: "Put On Sale",
-          params: {sale_percentage: "numeric"}},
+          params: [{name: "sale_percentage", label: "Sale Percentage", fieldType : "numeric"}]},
         { name: "order_more",
           label: "Order More",
-          params: {number_to_order: "numeric"}}
+          params: [{name: "number_to_order", label: "Number To Order", fieldType : "numeric"}]}
       ],
       data: [
         {name: "action-select", value: "put_on_sale", params: [
